@@ -49,12 +49,15 @@ const PROFILE = {
   ],
 
   // Your name as written in author lists; it is shown in bold.
-  authorMatch: /Karunakaran,? D\.?/,
+  authorMatch: /Denesh,? K\.?|Karunakaran,? D\.?/,
 
-  // Newest first. type: "Journal article", "Conference abstract", "Preprint", "In press", ...
+  // Newest first. Wrap a word in *asterisks* to show it in italics (e.g. species names).
+  // year: leave "" for papers in press or under review.
+  // type: "Journal article", "In press", "Under review", ...
+  // link: a DOI or web link; leave "" if there isn't one yet.
   publications: [
     {
-      authors: "Karunakaran, D., Ebtehaj, A., Burnette, L., Hondzo, M., & Olmanson, L.",
+      authors: "Denesh, K., et al.",
       year:    "2026",
       title:   "Initial assessment of the detectability of cyanotoxin occurrence using PACE satellite observations",
       venue:   "Geophysical Research Letters",
@@ -62,12 +65,36 @@ const PROFILE = {
       type:    "Journal article",
     },
     {
-      authors: "Bose, S., Karunakaran, D., Kapadia, T., Panwar, N., & Srivastava, N.",
+      authors: "Denesh, K., et al.",
+      year:    "2026",
+      title:   "Visible and near-infrared spectrogoniometry of natrojarosite, a Martian analogue from Matanomadh, India",
+      venue:   "Icarus",
+      link:    "",
+      type:    "Journal article",
+    },
+    {
+      authors: "Clark, L. C., Denesh, K., et al.",
+      year:    "",
+      title:   "Dynamics of clay–harmful algae aggregates: Evidence from field bioreactor data on biomass and toxin mitigation effectiveness",
+      venue:   "Harmful Algae",
+      link:    "",
+      type:    "In press",
+    },
+    {
+      authors: "Nath, R., Mali, S., Denesh, K., et al.",
       year:    "2025",
-      title:   "High-resolution surface temperatures of the Moon derived from Imaging Infra-Red Spectrometer (IIRS) on-board Chandrayaan-2: A case study on the Schrödinger Basin",
-      venue:   "EGU General Assembly 2025, Vienna, Austria, EGU25-691",
-      link:    "https://doi.org/10.5194/egusphere-egu25-691",
-      type:    "Conference abstract",
+      title:   "Classifying meteorites with MetNet: A deep learning approach using reflectance spectroscopy",
+      venue:   "Meteoritics & Planetary Science",
+      link:    "https://doi.org/10.1111/maps.14342",
+      type:    "Journal article",
+    },
+    {
+      authors: "Denesh, K., et al.",
+      year:    "",
+      title:   "Backscattering reflectance tracks *Microcystis* cell lysis and associated toxin release",
+      venue:   "Scientific Reports",
+      link:    "",
+      type:    "Under review",
     },
   ],
 
@@ -243,10 +270,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:26px 16px 34p
   if (!P.publications.length) $("publications").hidden = true;
   $("pubs").innerHTML = P.publications.map(p => {
     const authors = esc(p.authors).replace(P.authorMatch, m => `<b>${m}</b>`);
-    const title = p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title);
+    const t = esc(p.title).replace(/\*(.+?)\*/g, "<i>$1</i>");
+    const title = p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">${t}</a>` : t;
     const linkLabel = /doi\.org/.test(p.link) ? "DOI" : "Read";
     return `<li class="pub">
-      <div class="pub-meta"><span>${esc(p.year)}</span>${p.type ? `<span class="tag">${esc(p.type)}</span>` : ""}</div>
+      <div class="pub-meta">${p.year ? `<span>${esc(p.year)}</span>` : ""}${p.type ? `<span class="tag">${esc(p.type)}</span>` : ""}</div>
       <h3 class="pub-title">${title}</h3>
       <p>${authors}</p>
       <p class="venue">${esc(p.venue)}</p>
